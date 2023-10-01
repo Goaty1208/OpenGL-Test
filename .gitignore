@@ -1,4 +1,5 @@
 # Exclude compiled binary files
 *.exe
 *.o
-*/.pointlesShit
+# Ignore the pointlessShit directory
+/pointlessShit/
