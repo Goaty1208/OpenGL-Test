@@ -1,6 +1,6 @@
 #include <iostream>
 #include <glad/glad.h>    //FUCKING KILL YOURSELF WHY WON'T YOU FUCKING WORK
-#include <GLFW/glfw3.h>
+#include <GLFW/glfw3.h>   //Fixed the above
 
 
 //Do I really need to explain this?
@@ -12,13 +12,6 @@ int width = 800;
 
 void setupWindow();
 void processInput(GLFWwindow *window);
-
-
-float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-     0.0f,  0.5f, 0.0f
-}; 
 
 int main(int argc, char **argv){
 
@@ -50,6 +43,18 @@ int main(int argc, char **argv){
         return -1;
     }    
 
+    float vertices[6] = {
+        -0.5f, -0.5f,
+         0.5f, -0.5f,
+         0.0f,  0.5f
+    }; 
+
+    unsigned int buffer;
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), vertices, GL_STATIC_DRAW);
+
+
     //Render/Close loop.
     while (!glfwWindowShouldClose(window))
     {
@@ -59,8 +64,7 @@ int main(int argc, char **argv){
 
         glClearColor(0.55f, 0.71f, 0.73f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-
-        
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         //End of rendering loop
 
