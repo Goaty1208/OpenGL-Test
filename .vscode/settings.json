@@ -1,0 +1,8 @@
+{
+    "tasks.default": "C++ Build",
+    "files.associations": {
+        "*.txt": "plaintext",
+        "iostream": "cpp"
+    },
+}
+  
