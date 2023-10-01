@@ -3,3 +3,5 @@
 *.o
 # Ignore the pointlessShit directory
 /pointlessShit/
+#Ignore desktop.ini. Yeah.
+*.ini
