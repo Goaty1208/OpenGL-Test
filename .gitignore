@@ -1,0 +1,3 @@
+# Exclude compiled binary files
+*.exe
+*.o

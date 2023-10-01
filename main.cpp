@@ -23,7 +23,8 @@ int main(int argc, char **argv){
     {
         return -1;
     }
-
+    
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     // create a window pointer
     GLFWwindow *window = glfwCreateWindow(width, height, "OpenGL Test", NULL, NULL);
     // error check
