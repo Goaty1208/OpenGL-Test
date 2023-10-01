@@ -4,7 +4,7 @@
 
 
 //Do I really need to explain this?
-int height = 760;
+int height = 800;
 int width = 800;
 
 
@@ -13,6 +13,12 @@ int width = 800;
 void setupWindow();
 void processInput(GLFWwindow *window);
 
+
+float vertices[] = {
+    -0.5f, -0.5f, 0.0f,
+     0.5f, -0.5f, 0.0f,
+     0.0f,  0.5f, 0.0f
+}; 
 
 int main(int argc, char **argv){
 
@@ -53,6 +59,8 @@ int main(int argc, char **argv){
 
         glClearColor(0.55f, 0.71f, 0.73f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        
 
         //End of rendering loop
 
