@@ -6,6 +6,22 @@
 int height = 800;
 int width = 800;
 
+//Uhhhh
+//Yeah it does shit I guess
+//I hope
+static unsigned int CompileShader(unsigned int type, const std::string& source) {
+    
+    unsigned int id = glCreateShader(GL_VERTEX_SHADER);
+    const char* src = source.c_str();
+}
+
+
+//Function to create shaders. What the fuck was it supposed to be if not, I don't know, this?
+static int CreateShader(const std::string& vertexShader, const std::string& fragmentShader){
+    unsigned int program = glCreateProgram();   
+    unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);  
+}
+
 
 //All of the sweet, sweet functions.
     
