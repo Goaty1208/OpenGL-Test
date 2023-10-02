@@ -20,12 +20,20 @@ static unsigned int CompileShader(unsigned int type, const std::string& source) 
     //I might do error handling later
     //bool aboveStatement = false;
 
+    int result;
+    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+    if (result == GL_FALSE){
+        int length;
+        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+        char message[length];
+    }
+
     return id;
 }
 
 
 //Function to create shaders. What the fuck was it supposed to be if not, I don't know, this?
-static int CreateShader(const std::string& vertexShader, const std::string& fragmentShader){
+static unsigned CreateShader(const std::string& vertexShader, const std::string& fragmentShader){
     unsigned int program = glCreateProgram();   
     unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);  
     unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
@@ -34,6 +42,11 @@ static int CreateShader(const std::string& vertexShader, const std::string& frag
     glAttachShader(program, fs);
     glLinkProgram(program);
     glValidateProgram(program);
+
+    glDeleteShader(vs);
+    glDeleteShader(fs);
+
+    return program;
 }
 
 
