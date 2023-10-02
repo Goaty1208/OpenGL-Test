@@ -1,41 +1,21 @@
 #include <iostream>
-#include <glad/glad.h>    //FUCKING KILL YOURSELF WHY WON'T YOU FUCKING WORK
-#include <GLFW/glfw3.h>   //Fixed the above
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
-//Do I really need to explain this?
 int height = 800;
-int width = 800;
+int width = 1422;
 
-//Uhhhh
-//Yeah it does shit I guess
-//I hope
 static unsigned int CompileShader(unsigned int type, const std::string& source) {
-    
-    unsigned int id = glCreateShader(GL_VERTEX_SHADER);
+    unsigned int id = glCreateShader(type);
     const char* src = source.c_str();
     glShaderSource(id, 1, &src, nullptr);
     glCompileShader(id);
-    
-    //my sanity might be dwindling
-    //I might do error handling later
-    //bool aboveStatement = false;
-
-    int result;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
-    if (result == GL_FALSE){
-        int length;
-        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-        char message[length];
-    }
-
     return id;
 }
 
-
-//Function to create shaders. What the fuck was it supposed to be if not, I don't know, this?
-static unsigned CreateShader(const std::string& vertexShader, const std::string& fragmentShader){
-    unsigned int program = glCreateProgram();   
-    unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);  
+static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader) {
+    unsigned int program = glCreateProgram();
+    unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
     unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
     glAttachShader(program, vs);
@@ -49,28 +29,22 @@ static unsigned CreateShader(const std::string& vertexShader, const std::string&
     return program;
 }
 
-
-//All of the sweet, sweet functions.
-    
 void setupWindow();
-void processInput(GLFWwindow *window);
+void processInput(GLFWwindow* window);
 
-int main(int argc, char **argv){
-
+int main(int argc, char** argv) {
     setupWindow();
 
-    // initialize GLFW
-    if (!glfwInit())
-    {
+    if (!glfwInit()) {
         return -1;
     }
-    
+
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    // create a window pointer
-    GLFWwindow *window = glfwCreateWindow(width, height, "OpenGL Test", NULL, NULL);
-    // error check
-    if (window == NULL)
-    {
+
+    // Create a window pointer
+    GLFWwindow* window = glfwCreateWindow(width, height, "OpenGL Test", NULL, NULL);
+    
+    if (window == NULL) {
         std::cout << "Error. I could not create a window at all!" << std::endl;
         glfwTerminate();
         return -1;
@@ -78,62 +52,84 @@ int main(int argc, char **argv){
 
     glfwMakeContextCurrent(window);
 
-    //init GLAD
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
-    }    
+    }
 
     float vertices[9] = {
-        -0.5f, -0.5f, 0.0f, 
+         0.0f, 0.5f, 0.0f,
          0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
-    }; 
+         0.5f,  0.5f, 0.0f
+    };
+
+    unsigned int vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
 
     unsigned int vbo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), vertices, GL_STATIC_DRAW);
 
+    // Specify the vertex attribute pointer
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
 
-    //Render/Close loop.
-    while (!glfwWindowShouldClose(window))
-    {
+    std::string vertexShader =
+        "#version 330 core\n"
+        "layout(location = 0) in vec4 position;\n"
+        "void main()\n"
+        "{\n"
+        "   gl_Position = position;\n"
+        "}\n"
+    ;
+
+    std::string fragmentShader =
+        "#version 330 core\n"
+        "out vec4 FragColor;\n"
+        "void main()\n"
+        "{\n"
+        "   FragColor = vec4(0.0, 0.0, 0.0, 1.0);\n"
+        "}\n"
+    ;
+
+    unsigned int shader = CreateShader(vertexShader, fragmentShader);
+
+    while (!glfwWindowShouldClose(window)) {
         processInput(window);
-
-        //Start of rendering loop
 
         glClearColor(0.55f, 0.71f, 0.73f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        glUseProgram(shader);
+        glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
-
-        //End of rendering loop
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+    glDeleteVertexArrays(1, &vao);
+    glDeleteBuffers(1, &vbo);
+    glDeleteProgram(shader);
+
+    glfwTerminate();
+    return 0;
 }
 
-//This essentially changes the size of the window. Not exactly the best system around, but it works
-void setupWindow(){
-    std::cout << "Welcome to the optional window set-up.\nPress 0 to skip\nPlease select the height of the window:\n";    
+void setupWindow() {
+    std::cout << "Welcome to the optional window set-up.\nPress 0 to skip\nPlease select the height of the window:\n";
     std::cin >> height;
-    if(height == 0){
-        height = 760; 
+    if (height == 0) {
+        height = 760;
         return;
     }
     std::cout << "\nNow input the width:\n";
     std::cin >> width;
 }
 
-
-/*
-    Just a test to handle user input. The function
-    requires the current window as a parameter.
-*/
-void processInput(GLFWwindow *window)
-{
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+void processInput(GLFWwindow* window) {
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
+    }
 }
