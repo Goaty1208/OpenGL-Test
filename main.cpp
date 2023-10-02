@@ -2,14 +2,13 @@
 #include <glad/glad.h>    //FUCKING KILL YOURSELF WHY WON'T YOU FUCKING WORK
 #include <GLFW/glfw3.h>   //Fixed the above
 
-
 //Do I really need to explain this?
 int height = 800;
 int width = 800;
 
 
 //All of the sweet, sweet functions.
-
+    
 void setupWindow();
 void processInput(GLFWwindow *window);
 
@@ -43,16 +42,16 @@ int main(int argc, char **argv){
         return -1;
     }    
 
-    float vertices[6] = {
-        -0.5f, -0.5f,
-         0.5f, -0.5f,
-         0.0f,  0.5f
+    float vertices[9] = {
+        -0.5f, -0.5f, 0.0f, 
+         0.5f, -0.5f, 0.0f,
+         0.0f,  0.5f, 0.0f
     }; 
 
-    unsigned int buffer;
-    glGenBuffers(1, &buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), vertices, GL_STATIC_DRAW);
+    unsigned int vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 
     //Render/Close loop.
