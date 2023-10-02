@@ -13,6 +13,7 @@ static unsigned int CompileShader(unsigned int type, const std::string& source) 
     
     unsigned int id = glCreateShader(GL_VERTEX_SHADER);
     const char* src = source.c_str();
+    glShaderSource(id, 1, &src, nullptr);
 }
 
 
