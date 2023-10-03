@@ -10,6 +10,19 @@ static unsigned int CompileShader(unsigned int type, const std::string& source) 
     const char* src = source.c_str();
     glShaderSource(id, 1, &src, nullptr);
     glCompileShader(id);
+    
+    //my sanity might be dwindling
+    //I might do error handling later
+    //bool aboveStatement = false;
+
+    // int result;
+    // glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+    // if (result == GL_FALSE){
+    //     int length;
+    //     glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+    //     char message[length];
+    // }
+
     return id;
 }
 
