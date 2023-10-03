@@ -1,9 +1,10 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "Shadinclude.hpp" //github.com/tntmeijs/GLSL-Shader-Includes/blob/master/Shadinclude.hpp
 
-int height = 800;
-int width = 1422;
+int width = 800;
+int height = 600;
 
 static unsigned int CompileShader(unsigned int type, const std::string& source) {
     unsigned int id = glCreateShader(type);
@@ -45,7 +46,7 @@ static unsigned int CreateShader(const std::string& vertexShader, const std::str
 void setupWindow();
 void processInput(GLFWwindow* window);
 
-int main(int argc, char** argv) {
+int main() {
     setupWindow();
 
     if (!glfwInit()) {
@@ -72,8 +73,8 @@ int main(int argc, char** argv) {
 
     float vertices[9] = {
          0.0f, 0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.5f,  0.5f, 0.0f
+         -0.5f, -0.5f, 0.0f,
+         0.5f,  -0.5f, 0.0f
     };
 
     unsigned int vao;
@@ -103,7 +104,8 @@ int main(int argc, char** argv) {
         "out vec4 FragColor;\n"
         "void main()\n"
         "{\n"
-        "   FragColor = vec4(0.0, 0.0, 0.0, 1.0);\n"
+        "   gl_Position = position;\n"
+        "   FragColor = vec4(position, -gl_Position, 0.0, 1.0);\n"
         "}\n"
     ;
 
